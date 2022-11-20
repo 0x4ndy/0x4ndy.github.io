@@ -1,0 +1,117 @@
+/* background #002B36 */
+/* font #BCB8A9 */
+
+.terminal-main {
+  background-color: #002b36;
+  color: #bcb8a9;
+  font-size: 14px;
+  font-family: Consolas, monaco, monospace;
+}
+
+.terminal-input {
+  width: 80%;
+  display: inline-block;
+  cursor: default;
+  border: 0px;
+  outline: none;
+  background-color: #002b36;
+  color: #bcb8a9;
+  padding: 0px 0px 0px 4px;
+}
+
+.terminal-input-icon {
+  margin-top: 4px;
+  margin-right: 5px;
+}
+
+.terminal-menu {
+    text-align: right;
+}
+
+.page-title {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.color-green {
+  color: #98c379
+}
+
+.color-blue {
+    color: #348cc7 !important;
+}
+
+a {
+    color: #348cc7 !important;
+}
+
+h1 {
+  font-size: 17px !important;
+  font-weight: bold !important;
+}
+
+h1 .text-center {
+  text-align: center !important;
+}
+
+h2 {
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+h2 .text-center {
+  text-align: center !important;
+}
+
+h3 {
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
+
+h3 .text-center {
+  text-align: center !important;
+}
+
+.section-content {
+  text-align: justify;
+}
+
+.section-content .text-center {
+  text-align: center !important;
+}
+
+.section-content .text-right {
+  text-align: right !important;
+}
+
+.indent-1 {
+  padding-left: 10px;
+}
+
+.indent-2 {
+  padding-left: 20px;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 50%;
+}
+
+code {
+    color: #bcb8a9 !important;
+    background-color: #0a4f60;
+    border-radius: 3px;
+    font-family: courier, monospace;
+    padding: 0 3px;
+}
+
+pre {
+    color: #bcb8a9 !important;
+    background-color: #0a4f60;
+    border-radius: 3px;
+    font-family: courier, monospace;
+    padding: 0 3px;
+}

