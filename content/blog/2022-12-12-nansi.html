@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Andy's Terminal - Nansi - simple tool for task automation</title>
+        <meta property="og:title" content="Andy's Terminal - Nansi - simple tool for task automation" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://andy.codes/content/blog/2022-12-12-nansi.html" />
+        <meta property="og:image" content="https://andy.codes/assets/img/nansi/nansi_demo.gif"/>
+        <meta property="og:image:width" content="988" />
+        <meta property="og:image:height" content="605" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <link href="/assets/css/styles.css" rel="stylesheet">
+        <link href="/assets/css/lightbox.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/506cba49ac.js" crossorigin="anonymous"></script>
+        <script src="/assets/js/lightbox-plus-jquery.min.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Q6PN1HTQ5K"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-Q6PN1HTQ5K");
+        </script>
+    </head>
+    <body class="terminal-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 offset-sm-8 col-xs-4 offset-xs-7 terminal-menu">
+                    <a href="/">&#47;home</a> <a href="/content/projects">&#47;projects</a> <a href="/content/blog">&#47;blog</a> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <h1 class="text-center">Nansi - simple tool for task automation</h1>
+                    <div class="text-center">(<a href="/content/blog">back</a>)</div>
+                    <br />
+                    <div class="section-content">
+                      Since I've started getting into infosec, I have been using virtual machines for absolutely anything and everything. Sometimes that's because I want to have a clean setup, e.g. my Kali with some additional hacking tools; or maybe it's a Windows system on which I want to test my exploit and also needs to be pre-configured. It also happens that I simply have no other choice and have to spin up a new system, like in case of the Bug Bounty programs, which made me experience first hand the ISP response to some strange network traffic - just by blocking it.  
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        Setting up a new VM quickly became a very boring and repetitive task, and so I decided that I need to automate this process. Here's what I need: simple command runner, quick and easy. I've tried automating the process with bash first but soon realized that with the level of control I want those commands to run, bash is not going to be the best choice. The next thing that crossed my mind was to set up Ansible, since I remember using it at some point in the past, but the moment I started setting it up I realized that this thing blew into an immense giant and using it for what I need is an overkill (not to mention the huge waste of time).
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        All this led me to take a step back and think what exactly do I need:
+                        <ul>
+                            <li>simple command runner</li>
+                            <li>OS independent</li> 
+                            <li>possibility of defining dependencies between those commands (i.e., if command D depends on command B and command B fails its execution, command D won't execute)</li>
+                        </ul>
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        After a few minutes of googling and not finding anything half decent, I decided to quickly make my own. I called it <code>nansi</code> as 'not ansible'. It took me a few hours of figuring some things out and actually codding it. It was also a great opportunity to practice my Rust :)
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        Now to get me started with a new VM or a Bug Bounty target, I just need to spin up a Kali or Ubuntu on my favorite VPS provider and run one command to install all my hacking tools.
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        <h2 class="color-blue">Here's a short description:</h2>
+                        <code>nansi</code> is a simple tool for task automation. Its primary functionality is to execute a sequence of commands in a defined order. It was inspired by what <code>Dockerfile</code> is and what <code>ansible</code> is not.
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        <a href="/assets/img/nansi/nansi_demo.gif" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/nansi/nansi_demo.gif"></a>
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        Here's also a <a href="https://github.com/0x4ndy/nansi">link to GitHub repo</a>.
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <span class="color-green">0x4ndy:<span class="color-blue">~</span></span><span class="fa-solid fa-terminal color-blue"></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
