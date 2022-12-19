@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Andy's Terminal - clif: simple command-line application fuzzer</title>
+        <meta property="og:title" content="Andy's Terminal - clif: simple command-line application fuzze" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://andy.codes/content/blog/2022-12-20-clif.html" />
+        <meta property="og:image" content="https://andy.codes/assets/img/clif/clif_demo.png"/>
+        <meta property="og:image:width" content="988" />
+        <meta property="og:image:height" content="605" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <link href="/assets/css/styles.css" rel="stylesheet">
+        <link href="/assets/css/lightbox.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/506cba49ac.js" crossorigin="anonymous"></script>
+        <script src="/assets/js/lightbox-plus-jquery.min.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Q6PN1HTQ5K"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-Q6PN1HTQ5K");
+        </script>
+    </head>
+    <body class="terminal-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 offset-sm-8 col-xs-4 offset-xs-7 terminal-menu">
+                    <a href="/">&#47;home</a> <a href="/content/projects">&#47;projects</a> <a href="/content/blog">&#47;blog</a> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <h1 class="text-center">clif - simple command-line application fuzzer</h1>
+                    <div class="text-center">(<a href="/content/blog">back</a>)</div>
+                    <br />
+                    <div class="section-content">
+                        <code>clif</code> is a command-line application fuzzer, pretty much what a <code>wfuzz</code> or <code>fuff</code> are for web. It was inspired by <code>sudo</code> vulnerability <code>CVE-2021-3156</code> and the fact that, for some reasons, Google's <code>alf-fuzz</code> doesn't allow for unlimited argument or option specification. Since I try to practice my Rust whenever there's an opportunity to develop something that I actually might use, I decided to create my own fuzzer.
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        Here are a few examples of what it can do:
+                    </div>
+                    <br/>
+                    <div class="section-content">
+                        <pre>
+
+                        # throw wordlist.txt as input
+                        clif -e my_program -w wordlist.txt 
+
+                        # throw wordlist.txt as -p argument
+                        clif -e my_program -w wordlist.txt -a "-p FUZZ" 
+
+                        # throw numbers from range 100..100000000 as the first argument
+                        clif -e my_program -n 100..100000000 -a "-n FUZZ" 
+
+                        # throw a string with length from range 10..100 as the first argument
+                        clif -e my_program -s 10..100
+                        </pre>
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        For more details, head to the <a href="https://github.com/0x4ndy/clif">GitHub repo</a>.
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        <h2 class="color-blue">Here's a quick demo:</h2>
+                    </div>
+                    <div class="section-content">
+                        <a href="/assets/img/clif/clif_demo.gif" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/clif/clif_demo.gif"></a>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <span class="color-green">0x4ndy:<span class="color-blue">~</span></span><span class="fa-solid fa-terminal color-blue"></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
