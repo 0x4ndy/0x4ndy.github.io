@@ -55,15 +55,15 @@
                     <div class="text-center">(<a href="/content/blog">back</a>)</div>
                     <br />
                     <div class="section-content">
-                        One of the things which became apparent to me (which also came as a surprise) since I've started my journey with offensive security was that Windows systems and Active Directory are absolutely everywhere. Most of the systems you will ever get to hack as an offensive security professional are going to be on Windows.
+                        One of the things which became apparent to me (which also came as a surprise) since I've started my journey with offensive security was that Windows systems and <code>Active Directory</code> are absolutely everywhere. Most of the systems you will ever get to hack as an offensive security professional are going to be on Windows.
                     </div>
                     <br />
                     <div class="section-content">
-                        Probably the best tools for AD enumeration out there are the PowerView and PowerShell Empire, however, to start using them you need to transfer those tools to the target machine just to do some basic enumerations, which sometimes is not ideal and waste of time. I've noticed that instead of going for transfer of rather large tools like the ones mentioned above, often a pentester will write a small script in PowerShell to start a simple enumeration of AD, just to see if there's anything there worth attention. I've started practicing this approach myself and I find it much quicker - once I'm on a target system with access to PowerShell, I can write a short code and run it on that system to get the basic detains about AD.
+                        Probably the best tool for AD enumeration out there is the <code>PowerView</code>, however, to start using it you need to first transfer it to the target machine, just to do some basic enumerations, which sometimes is not ideal and can be problematic. I've noticed that often instead, a pentester will write a small script in <code>PowerShell</code> to start a simple enumeration of <code>AD</code>, just to see if there's anything there worth the attention. I've started practicing this approach myself and I find it much quicker - once I'm on a target system with access to <code>PowerShell</code>, I can write a short code and run it on that system to get the basic detains about <code>AD</code>.
                     </div>
                     <br/>
                     <div class="section-content">
-                        Having this in mind, I've created a small PowerShell tool, called <code>adwalk</code>, which allows me to do just that. The main purpose of it is to display all OUs (Organization Units) in the Active Directory you are currently connected to, but you can also supply a filter in case you're looking for something specific, like an SQL server. Here's how it works:
+                        Having this in mind, I've created a small <code>PowerShell</code> tool, called <code>adwalk</code>, which allows me to do just that. The main purpose of it is to display all <code>OUs</code> (Organization Units) in the Active Directory you are currently connected to, but you can also supply a filter in case you're looking for something specific, like an SQL server. Here's how it works:
                     </div>
                     <br/>
                     <div class="section-content">
