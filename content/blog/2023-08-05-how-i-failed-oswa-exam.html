@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>How I Failed OSWA Exam</title>
+        <meta property="og:title" content="How I Failed OSWA Exam" />
+        <meta property="og:description" content="After obtaining my OSCP certification, I considered a couple of options for my next certification. The main ones I had in mind were OSED and OSWE." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://andy.codes/content/blog/2023-08-05-how-i-failed-oswa-exam.html" />
+        <meta property="og:image" content="https://andy.codes/assets/img/2023-08-05-how-i-failed-oswa-exam/img.png"/>
+        <meta property="og:image:width" content="1536" />
+        <meta property="og:image:height" content="860" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <link href="/assets/css/styles.css" rel="stylesheet">
+        <link href="/assets/css/lightbox.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/506cba49ac.js" crossorigin="anonymous"></script>
+        <script src="/assets/js/lightbox-plus-jquery.min.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Q6PN1HTQ5K"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-Q6PN1HTQ5K");
+        </script>
+    </head>
+    <body class="terminal-main">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2 offset-sm-2 col-2">
+                <a href="https://twitter.com/0x4ndy"><i class="fa-brands fa-square-twitter"></i></a>
+                <a href="https://github.com/0x4ndy"><i class="fa-brands fa-square-github"></i></a>
+                <a href="https://infosec.exchange/@0x4ndy"><i class="fa-brands fa-mastodon"></i></a>
+            </div>
+            <div class="col-sm-2 offset-sm-4 col-8 offset-2 terminal-menu">
+                <a href="/">&#47;home</a> <a href="/content/projects">&#47;projects</a> <a href="/content/blog">&#47;blog</a> 
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <h1 class="text-center">How I Failed OSWA Exam</h1>
+                    <div class="text-center">(<a href="/content/blog">back</a>)</div>
+                    <br />
+                    <div class="section-content">
+                        After obtaining my OSCP certification, I considered a couple of options for my next certification. The main ones I had in mind were OSED and OSWE. However, although I was a little tired after completing the OSCP, I didn't want to take a break. Instead, I decided to relax a bit by going for something that would be easier to achieve. While browsing through the OffSec library for other 200-level courses, I came across OSWA, which seemed like a good opportunity to delve deeper into web penetration testing.
+                    </div>
+                    <br />
+                    <h2 class="color-blue">What is OSWA?</h2>
+                    <div class="section-content">
+                        OSWA stands for <a href="https://www.offsec.com/courses/web-200/">Offensive Security Web Assessor</a>, and it is a certification that validates the skills acquired during the WEB-200 course. The course focuses on Web Penetration Testing from a black-box testing perspective. It covers various vulnerability classes and provides insights into how they function from both an attacker and defender standpoint.
+                    </div>
+                    <br />
+                    <h2 class="color-blue">Training material and labs</h2>
+                    <div class="section-content">
+                        Similar to other OffSec courses, WEB-200 includes training materials (PDFs and videos), interactive exercises that accompany each training module (where students can start a virtual machine, perform specific actions to obtain a flag, and submit it through the portal), and a set of lab machines. The interactive exercises are contextualized within the training material, while the lab machines are standalone systems with no hints about the vulnerabilities or attack vectors they expose. Each lab machine contains two flags: one displayed upon obtaining administrator-level access to the web application and the other in a `proof.txt` file hidden somewhere on the system. The lab environment simulates real-world web pentesting, combining challenging scenarios with CTF-like elements. The lab size keeps expanding over time, and OffSec introduces frequent small changes to enhance the course content. When I started working on WEB-200, there were 6 boxes, and by the time I finished it, there were already 8. So, by the time you read this, there might be more machines.
+                    </div>
+                    <br />
+                    <h2 class="color-blue">The exam</h2>
+                    <div class="section-content">
+                        The OSWA exam is a standard 24-hour test with five standalone boxes to assess the candidate's skills. After completing the exam, participants have an additional 24 hours to prepare and submit the report. The exam machines are similar to those encountered in the lab, but with different vulnerabilities and exploitation techniques. The rules for obtaining the flags in the exam are the same as those in the lab environment, though they may change over time, so it's crucial to refer to the official <a href="https://help.offsec.com/hc/en-us/articles/4410105650964-WEB-200-Foundational-Web-Application-Assessments-with-Kali-Linux-OSWA-Exam-Guide">Exam Guide</a> pages for the latest information.
+                    </div>
+                    <h2 class="color-blue">My experience with OSWA</h2>
+                    <div class="section-content">
+                        Initially, I believed OSWA would be an easy and quick success, but I soon realized I had underestimated its difficulty. While I was already familiar with most web vulnerability classes and had some black-box web pentesting experience, the WEB-200 course introduced numerous variations and challenges I had never encountered before. The difficulty level was high, emphasizing not only technical skills but also the ability to think creatively. I approached the training with a similar strategy as I did for OSCP, starting with easy machines and seeking help from forums and the Discord community. However, I discovered that this approach was not suitable for OSWA due to the limited number of lab machines available. Asking for help too often deprived me of the opportunity to figure things out independently.
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        Unfortunately, I failed my first OSWA attempt, and upon returning to the lab, I realized that I had forgotten certain concepts because I relied too much on external help instead of solving challenges on my own. I paid the price during the exam. Nevertheless, I learned from this experience and scheduled a second attempt after a 3-week cooldown period (my subscription allows for a 2-week cooldown). During this time, I thoroughly reviewed all training materials and completed the lab again, this time without seeking any assistance, even tackling the new machines added later. Ultimately, I successfully passed the second attempt and can now officially call myself an Offensive Security Web Assessor. I firmly believe that if I had put more effort into solving all lab machines independently and not underestimated the course's difficulty initially, I could have passed on my first try. Lesson learned.
+                    </div>
+                    <br />
+                    <div class="section-content">
+                        Now, I'm looking forward to moving on to WEB-300 and CRTO, both of which I need for work, and I'm incredibly excited about them!
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <span class="color-green">0x4ndy:<span class="color-blue">~</span></span><span class="fa-solid fa-terminal color-blue"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-xs-4 offset-xs-7">
+                    <script src="https://giscus.app/client.js"
+                        data-repo="0x4ndy/0x4ndy.github.io"
+                        data-repo-id="MDEwOlJlcG9zaXRvcnkzNDQyNzE0NTQ="
+                        data-category="General"
+                        data-category-id="DIC_kwDOFIUqXs4CWs5W"
+                        data-mapping="title"
+                        data-strict="1"
+                        data-reactions-enabled="1"
+                        data-emit-metadata="0"
+                        data-input-position="top"
+                        data-theme="preferred_color_scheme"
+                        data-lang="en"
+                        data-loading="lazy"
+                        crossorigin="anonymous"
+                        async>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
